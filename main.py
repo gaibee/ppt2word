@@ -4,7 +4,7 @@ from docx.enum.table import WD_ALIGN_VERTICAL
 from docx.oxml.ns import qn
 from docx.shared import Cm, Pt
 import json
-import os
+import os, sys
 from tkinter import filedialog
 from components import ppt
 
@@ -16,12 +16,12 @@ try:
         config = json.load(f)
 except:
     print('config.json 파일을 찾을 수 없습니다.')
-    quit()
+    sys.exit()
 
 # ppt 파일 불러오기
 file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title = "ppt 파일을 선택 해 주세요", filetypes = (("*.pptx","*pptx"),("*.ppt","*ppt")))
 if file_path == '':
-    quit()
+    sys.exit()
 
 print(f'선택된 ppt 파일 : {file_path}')
 

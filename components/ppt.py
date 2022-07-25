@@ -8,7 +8,7 @@ def slide_to_image(png_folder, ppt_path):
     utils.save_pptx_as_png(png_folder, ppt_path, overwrite_folder=True)
 
 def get_slides_note(ppt_path):
-    parsed = Presentation("data/myppt.pptx")
+    parsed = Presentation(ppt_path)
     notes = []
 
     # 슬라이드 별로 순회하면서 데이터 추출
