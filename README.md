@@ -17,6 +17,7 @@ python main.py<br>
 ### Requirements
 pip install python-pptx<br>
 pip install python-docx<br>
+pip install python-pptx-interface<br>
 
 ### 변환 이미지
 <img src="https://user-images.githubusercontent.com/64792575/180704860-ae021ef5-6f03-4f1c-ac7b-28f048f673c9.png" width=800>
