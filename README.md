@@ -8,3 +8,8 @@
 "COLUMN_NOTE_WIDTH" : 6.75, # 슬라이드 노트를 나타내는 셀의 가로 크기(cm)<br>
 "FONT": "맑은 고딕", # 폰트<br>
 "FONT_SIZE": 10 # 폰트 크기(pt)<br>
+
+# 사용법
+python main.py<br>
+실행 후 변환하고 싶은 pptx 파일 선택<br>
+변환이 완료되면 해당 폴더에 save.docx로 저장됨<br>
