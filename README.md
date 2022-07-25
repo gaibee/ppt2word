@@ -13,3 +13,7 @@
 python main.py<br>
 실행 후 변환하고 싶은 pptx 파일 선택<br>
 변환이 완료되면 해당 폴더에 save.docx로 저장됨<br>
+
+# Requirements
+pip install python-pptx<br>
+pip install python-docx<br>
