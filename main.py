@@ -14,8 +14,6 @@ import unicodedata
 
 
 
-
-
 def remove_control_characters(s):
     s = s.encode('utf-8').decode('utf-8', 'ignore')
     return "".join(ch if unicodedata.category(ch) not in ['Cc', 'Cf', 'Cs', 'Co', 'Cn'] else '\n' for ch in s )
@@ -26,23 +24,10 @@ def delete_paragraph(paragraph):
     paragraph._p = paragraph._element = None
 
 
+# Working dir을 현재 파이썬 파일의 dir로 설정
+current_path = os.path.dirname(os.path.abspath(__file__))
+os.chdir(current_path)
 
-
-
-
-
-# 실행 변수 불러오기
-if len(sys.argv) == 1:
-
-    # 실행인자가 없으면 직접 ppt 파일을 선택하게 한다.
-    file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title = "ppt 파일을 선택 해 주세요", filetypes = (("*.pptx","*pptx"),("*.ppt","*ppt")))
-    if file_path == '':
-        sys.exit()
-        
-else:
-    file_path = sys.argv[1]
-
-print(f'선택된 ppt 파일 : {file_path}')
 
 # 설정 불러오기
 config = {}
@@ -53,16 +38,28 @@ except:
     print('config.json 파일을 찾을 수 없습니다.')
     sys.exit()
 
+# 실행 변수 불러오기
+if len(sys.argv) == 1:
 
-# ppt 파일 -> png로 변환
-if not os.path.exists('png'):
-    os.makedirs('png')
-    print('png 폴더 생성')
+    # 실행인자가 없으면 직접 ppt 파일을 선택하게 한다.
+    file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title = "ppt 파일을 선택 해 주세요", filetypes = (("*.pptx","*pptx"),("*.ppt","*ppt")))
+    if file_path == '':
+        sys.exit()
 
-png_full_path = os.path.join( os.getcwd(), 'png' )
-print(f'{file_path} ppt 파일을 {png_full_path} 폴더에 png 파일로 저장중...')
-ppt.slide_to_image(png_full_path, file_path)
-print('- 완료')
+    print(f'선택된 ppt 파일 : {file_path}')
+
+    # ppt 파일 -> png로 변환
+    if not os.path.exists('png'):
+        os.makedirs('png')
+        print('png 폴더 생성')
+
+    png_full_path = os.path.join( os.getcwd(), 'png' )
+    print(f'{file_path} ppt 파일을 {png_full_path} 폴더에 png 파일로 저장중...')
+    ppt.slide_to_image(png_full_path, file_path)
+    print('- 완료')
+    
+else:
+    file_path = sys.argv[1]
 
 print('슬라이드 노트 불러오는 중...')
 notes = ppt.get_slides_note(file_path)
