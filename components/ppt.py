@@ -5,7 +5,8 @@ def slide_to_image(png_folder, ppt_path):
     '''
     you should use full paths, to make sure PowerPoint can handle the paths
     '''
-    utils.save_pptx_as_png(png_folder, ppt_path, overwrite_folder=True)
+    utils.save_pptx_as_png(png_folder, f'"{ppt_path}"', overwrite_folder=True)
+
 
 def get_slides_note(ppt_path):
     parsed = Presentation(ppt_path)
