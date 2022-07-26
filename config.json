@@ -9,5 +9,7 @@
     "COLUMN_NOTE_WIDTH" : 6,
 
     "FONT": "맑은 고딕",
-    "FONT_SIZE": 10
+    "FONT_SIZE": 10,
+
+    "PNG_SAVE_FOLDER_PATH": "png folder"
 }

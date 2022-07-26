@@ -38,28 +38,23 @@ except:
     print('config.json 파일을 찾을 수 없습니다.')
     sys.exit()
 
-# 실행 변수 불러오기
-if len(sys.argv) == 1:
 
-    # 실행인자가 없으면 직접 ppt 파일을 선택하게 한다.
-    file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title = "ppt 파일을 선택 해 주세요", filetypes = (("*.pptx","*pptx"),("*.ppt","*ppt")))
-    if file_path == '':
-        sys.exit()
+# 직접 ppt 파일을 선택하게 한다.
+file_path = filedialog.askopenfilename(initialdir=os.getcwd(), title = "ppt 파일을 선택 해 주세요", filetypes = (("*.pptx","*pptx"),("*.ppt","*ppt")))
+if file_path == '':
+    sys.exit()
 
-    print(f'선택된 ppt 파일 : {file_path}')
+print(f'선택된 ppt 파일 : {file_path}')
 
-    # ppt 파일 -> png로 변환
-    if not os.path.exists('png'):
-        os.makedirs('png')
-        print('png 폴더 생성')
+# ppt 파일 -> png로 변환
+if not os.path.exists(config["PNG_SAVE_FOLDER_PATH"]):
+    os.makedirs(config["PNG_SAVE_FOLDER_PATH"])
+    print(f'{config["PNG_SAVE_FOLDER_PATH"]} 폴더 생성')
 
-    png_full_path = os.path.join( os.getcwd(), 'png' )
-    print(f'{file_path} ppt 파일을 {png_full_path} 폴더에 png 파일로 저장중...')
-    ppt.slide_to_image(png_full_path, file_path)
-    print('- 완료')
-    
-else:
-    file_path = sys.argv[1]
+png_full_path = os.path.join( os.getcwd(), config['PNG_SAVE_FOLDER_PATH'] )
+print(f'{file_path} ppt 파일을 {png_full_path} 폴더에 png 파일로 저장중...')
+ppt.slide_to_image(png_full_path, file_path)
+print('- 완료')
 
 print('슬라이드 노트 불러오는 중...')
 notes = ppt.get_slides_note(file_path)
@@ -89,13 +84,15 @@ for i, row in enumerate(table.rows):
     # SIZE_MODE가 width이면 height는 그림 비율로 자동조정
     run = cells[0].paragraphs[0].add_run()
     if config['SIZE_MODE']=='width':
-        run.add_picture(f'png/슬라이드{i+1}.PNG', width=Cm(config['PPT_WIDTH']))
+        run.add_picture(f'{config["PNG_SAVE_FOLDER_PATH"]}/슬라이드{i+1}.PNG', width=Cm(config['PPT_WIDTH']))
     elif config['SIZE_MODE']=='height':
-        run.add_picture(f'png/슬라이드{i+1}.PNG', height=Cm(config['PPT_HEIGHT']))
+        run.add_picture(f'{config["PNG_SAVE_FOLDER_PATH"]}/슬라이드{i+1}.PNG', height=Cm(config['PPT_HEIGHT']))
     
     # Note 텍스트 추가
     paragraph = cells[1].paragraphs[0]
+    
     for text in remove_control_characters(notes[i]).split('\n'):
+        # 특수문자 및 유니코드 이상한거 지우기
         
         # 단락 간격 설정
         paragraph.paragraph_format.space_before = Pt(0)
@@ -103,9 +100,7 @@ for i, row in enumerate(table.rows):
         paragraph.paragraph_format.line_spacing = 1
 
         run = paragraph.add_run()
-        
-        # 특수문자 및 유니코드 이상한거 지우기
-        run.text = remove_control_characters(text)
+        run.text = text
         
         # 폰트랑 글자 크기 설정
         run.font.name = config['FONT']
